@@ -44,7 +44,7 @@ const MainStack = () => {
         tabBarHideOnKeyboard: true,
       })}
       detachInactiveScreens={true}
-      initialRouteName="ReplayStack"
+      initialRouteName="Replay"
       backBehavior="history">
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Feed" component={FeedStack} />
