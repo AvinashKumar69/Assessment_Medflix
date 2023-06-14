@@ -17,9 +17,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      {/* <PaperProvider> */}
       <RootNavigation />
-      {/* </PaperProvider> */}
     </NavigationContainer>
   );
 }
