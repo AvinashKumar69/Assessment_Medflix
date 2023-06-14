@@ -9,6 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import {PaperProvider} from 'react-native-paper';
 
 import RootNavigation from './src/navigation/RootNavigation';
 
@@ -17,7 +18,9 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <RootNavigation />
+      <PaperProvider>
+        <RootNavigation />
+      </PaperProvider>
     </NavigationContainer>
   );
 }

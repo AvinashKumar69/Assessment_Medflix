@@ -1,234 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
-  Dimensions,
+  FlatList,
+  SafeAreaView,
   StatusBar,
   StyleSheet,
-  TouchableOpacity,
+  Text,
   View,
 } from 'react-native';
-import Video from 'react-native-video';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProgressBar from '../../components/ProgressBar';
-import VideoPlayerControls from '../../components/VideoPlayerControls';
-import {useOrientation} from '../../customHooks/useOrientation';
-
-const videoURL =
-  'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-
-const windowHeight = Dimensions.get('window').width * (9 / 16);
-const windowWidth = Dimensions.get('window').width;
-
-const height = Dimensions.get('window').width;
-const width = Dimensions.get('window').height;
+import {mediaJSON} from '../../assets/data/VideoData';
+import VideoCard from '../../components/VideoCard';
 
 const Replay = () => {
-  const videoRef = React.createRef();
-  const orientation = useOrientation();
-  // const orientation = 'PORTRAIT';
+  console.log('mediaJSON-->', mediaJSON.categories[0].videos[0]);
+  const VIDEO_DATA = mediaJSON?.categories[0]?.videos;
 
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [play, setPlay] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
-  const [showControl, setShowControl] = useState(true);
-
-  useEffect(() => {
-    if (orientation === 'PORTRAIT') {
-      console.log('portrait');
-      StatusBar?.setHidden(false);
-    } else {
-      console.log('landscape');
-      StatusBar?.setHidden(true);
-    }
-  }, [orientation]);
-
-  const handleOrientation = orientation => {
-    if (orientation === 'LANDSCAPE') {
-      setFullscreen(true);
-      StatusBar.setHidden(true);
-    } else {
-      setFullscreen(false);
-      StatusBar.setHidden(false);
-    }
-  };
-
-  const handlePlayPause = () => {
-    if (play) {
-      setPlay(false);
-      setShowControl(true);
-      return;
-    }
-    setTimeout(() => setShowControl(false), 2000);
-    setPlay(true);
-  };
-
-  const handlePlay = () => {
-    setTimeout(() => setShowControl(false), 500);
-    setPlay(true);
-  };
-
-  const skipBackward = () => {
-    videoRef.current.seek(currentTime - 10);
-    setCurrentTime(currentTime - 10);
-  };
-
-  const skipForward = () => {
-    videoRef.current.seek(currentTime + 10);
-    setCurrentTime(currentTime + 10);
-  };
-
-  const handleControls = () => {
-    if (showControl) {
-      setShowControl(false);
-    } else {
-      setShowControl(true);
-    }
-  };
-
-  const handleFullscreen = () => {
-    if (fullscreen) {
-      // Orientation.unlockAllOrientations();
-    } else {
-      // Orientation.lockToLandscapeLeft();
-    }
-  };
-
-  const onLoadEnd = data => {
-    setDuration(data.duration);
-    setCurrentTime(data.currentTime);
-  };
-
-  const onProgress = data => {
-    setCurrentTime(data.currentTime);
-  };
-
-  const onSeek = data => {
-    videoRef.current.seek(data.seekTime);
-    setCurrentTime(data.seekTime);
-  };
-
-  const onEnd = () => {
-    setPlay(false);
-    videoRef.current.seek(0);
-  };
+  const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
 
   return (
-    <View style={fullscreen ? styles.fullscreenContainer : styles.container}>
-      <TouchableOpacity onPress={handleControls}>
-        <Video
-          ref={videoRef}
-          source={{
-            uri: videoURL,
-          }}
-          style={fullscreen ? styles.fullscreenVideo : styles.video}
-          controls={false}
-          resizeMode={'contain'}
-          onLoad={onLoadEnd}
-          onProgress={onProgress}
-          onEnd={onEnd}
-          paused={!play}
-          muted={true}
-        />
-
-        {showControl && (
-          <View style={styles.controlOverlay}>
-            <TouchableOpacity
-              onPress={handleFullscreen}
-              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-              style={styles.fullscreenButton}>
-              {fullscreen ? (
-                <MaterialCommunityIcons
-                  size={24}
-                  color="#fafafa"
-                  name="fullscreen-exit"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  size={24}
-                  color="#fafafa"
-                  name="fullscreen"
-                />
-              )}
-            </TouchableOpacity>
-
-            <VideoPlayerControls
-              onPlay={handlePlay}
-              onPause={handlePlayPause}
-              playing={play}
-              skipBackwards={skipBackward}
-              skipForwards={skipForward}
-            />
-
-            <ProgressBar
-              currentTime={currentTime}
-              duration={duration > 0 ? duration : 0}
-              onSlideStart={handlePlayPause}
-              onSlideComplete={handlePlayPause}
-              onSlideCapture={onSeek}
-            />
-          </View>
-        )}
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={VIDEO_DATA}
+        renderItem={({item}) => <VideoCard data={item} />}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView>
   );
 };
 
 export default Replay;
 
 const styles = StyleSheet.create({
-  backgroundVideo: {
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // bottom: 0,
-    // right: 0,
-    height: 300,
-    width: '100%',
-  },
   container: {
-    backgroundColor: '#ebebeb',
-  },
-  fullscreenContainer: {
     flex: 1,
-    backgroundColor: '#ebebeb',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 5,
+    backgroundColor: '#000',
   },
-  video: {
-    height: windowHeight,
-    width: windowWidth,
-    backgroundColor: 'black',
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
-  fullscreenVideo: {
-    flex: 1,
-    height: height,
-    width: width,
-    backgroundColor: 'black',
-  },
-  text: {
-    marginTop: 30,
-    marginHorizontal: 20,
-    fontSize: 15,
-    textAlign: 'justify',
-  },
-  fullscreenButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-    paddingRight: 10,
-  },
-  controlOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#000000c4',
-    justifyContent: 'space-between',
+  title: {
+    fontSize: 32,
   },
 });
