@@ -2,6 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {Colors} from '../assets/colors/Colors';
 import FeedStack from './FeedStack';
 import HomeStack from './HomeStack';
 import MyActivityStack from './MyActivityStack';
@@ -16,7 +17,7 @@ const MainStack = () => {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#000',
+          backgroundColor: Colors.PrimaryBG,
           height: 60,
           paddingBottom: 5,
         },
@@ -32,14 +33,16 @@ const MainStack = () => {
           else if (route.name === 'Replay')
             iconName = focused ? 'video' : 'video-outline';
           else if (route.name === 'My activity')
-            iconName = focused ? 'play-box-multiple' : 'play-box-multiple-outline';
+            iconName = focused
+              ? 'play-box-multiple'
+              : 'play-box-multiple-outline';
 
           return (
             <MaterialCommunityIcons name={iconName} size={size} color={color} />
           );
         },
-        tabBarActiveTintColor: '#e6c757',
-        tabBarInactiveTintColor: '#eaeaea',
+        tabBarActiveTintColor: Colors.ActiveIconColor,
+        tabBarInactiveTintColor: Colors.InactiveIconColor,
         tabBarShowLabel: true,
         tabBarHideOnKeyboard: true,
       })}

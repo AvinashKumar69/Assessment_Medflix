@@ -3,13 +3,19 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import {Colors} from '../assets/colors/Colors';
+
 const VideoPlayerControls = props => {
   const {playing, onPlay, onPause, skipForwards, skipBackwards} = props;
 
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
-        <MaterialIcons size={24} color="#fafafa" name="replay-10" />
+        <MaterialIcons
+          size={24}
+          color={Colors.PrimaryIconColor}
+          name="replay-10"
+        />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -18,20 +24,24 @@ const VideoPlayerControls = props => {
         {playing ? (
           <MaterialCommunityIcons
             size={50}
-            color="#fafafa"
+            color={Colors.PrimaryIconColor}
             name="pause-circle-outline"
           />
         ) : (
           <MaterialCommunityIcons
             size={50}
-            color="#fafafa"
+            color={Colors.PrimaryIconColor}
             name="play-circle-outline"
           />
         )}
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
-        <MaterialIcons size={24} color="#fafafa" name="forward-10" />
+        <MaterialIcons
+          size={24}
+          color={Colors.PrimaryIconColor}
+          name="forward-10"
+        />
       </TouchableOpacity>
     </View>
   );

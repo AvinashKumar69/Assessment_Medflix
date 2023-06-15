@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Video from 'react-native-video';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Video from 'react-native-video';
 
+import {Colors} from '../../assets/colors/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import VideoPlayerControls from '../../components/VideoPlayerControls';
 import {useOrientation} from '../../customHooks/useOrientation';
@@ -141,13 +142,13 @@ const VideoPlayer = ({route}) => {
               {fullscreen ? (
                 <MaterialCommunityIcons
                   size={24}
-                  color="#fafafa"
+                  color={Colors.PrimaryIconColor}
                   name="fullscreen-exit"
                 />
               ) : (
                 <MaterialCommunityIcons
                   size={24}
-                  color="#fafafa"
+                  color={Colors.PrimaryIconColor}
                   name="fullscreen"
                 />
               )}
@@ -188,11 +189,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    backgroundColor: '#ebebeb',
+    backgroundColor: Colors.PrimaryBG,
   },
   fullscreenContainer: {
     flex: 1,
-    backgroundColor: '#ebebeb',
+    backgroundColor: Colors.PrimaryBG,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -202,13 +203,13 @@ const styles = StyleSheet.create({
   video: {
     height: windowHeight,
     width: windowWidth,
-    backgroundColor: 'black',
+    backgroundColor: Colors.PrimaryBG,
   },
   fullscreenVideo: {
     flex: 1,
     height: height,
     width: width,
-    backgroundColor: 'black',
+    backgroundColor: Colors.PrimaryBG,
   },
   text: {
     marginTop: 30,
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#000000c4',
+    backgroundColor: Colors.PrimaryBG,
     justifyContent: 'space-between',
   },
 });

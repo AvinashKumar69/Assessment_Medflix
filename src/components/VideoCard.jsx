@@ -5,6 +5,8 @@ import {Card, Text} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {Colors} from '../assets/colors/Colors';
+
 const VideoCard = ({data}) => {
   const navigation = useNavigation();
 
@@ -14,6 +16,7 @@ const VideoCard = ({data}) => {
   const videoClickHandler = () => {
     navigation.navigate('VideoPlayer', {
       videoData: data,
+      name: data?.title,
     });
   };
 
@@ -28,7 +31,11 @@ const VideoCard = ({data}) => {
       <Card.Content style={styles.cardContent_videoStatSection}>
         <View style={styles.cardContent_section}>
           <View style={styles.cardContent_subSection}>
-            <MaterialCommunityIcons size={16} color="#fafafa" name="eye" />
+            <MaterialCommunityIcons
+              size={16}
+              color={Colors.PrimaryIconColor}
+              name="eye"
+            />
             <Text
               variant="bodySmall"
               style={styles.cardContent_subSection_text}>
@@ -37,7 +44,11 @@ const VideoCard = ({data}) => {
           </View>
 
           <View style={styles.cardContent_subSection}>
-            <MaterialCommunityIcons size={16} color="#fafafa" name="star" />
+            <MaterialCommunityIcons
+              size={16}
+              color={Colors.PrimaryIconColor}
+              name="star"
+            />
             <Text
               variant="bodySmall"
               style={styles.cardContent_subSection_text}>
@@ -46,7 +57,11 @@ const VideoCard = ({data}) => {
           </View>
 
           <View style={styles.cardContent_subSection}>
-            <Entypo size={16} color="#ada0a0" name="dot-single" />
+            <Entypo
+              size={16}
+              color={Colors.EmbededIconColor}
+              name="dot-single"
+            />
             <Text
               variant="bodySmall"
               style={styles.cardContent_subSection_textGray}>
@@ -58,12 +73,12 @@ const VideoCard = ({data}) => {
         <View style={styles.cardContent_section}>
           <MaterialCommunityIcons
             size={20}
-            color="#fafafa"
+            color={Colors.PrimaryIconColor}
             name="bookmark-outline"
           />
           <MaterialCommunityIcons
             size={20}
-            color="#fafafa"
+            color={Colors.PrimaryIconColor}
             name="share-variant"
           />
         </View>
@@ -72,7 +87,7 @@ const VideoCard = ({data}) => {
       <Card.Content style={styles.cardContent_commentSection}>
         <MaterialCommunityIcons
           size={18}
-          color="#fafafa"
+          color={Colors.PrimaryIconColor}
           name="comment-processing"
         />
         <View style={{}}>
@@ -109,7 +124,7 @@ export default VideoCard;
 
 const styles = StyleSheet.create({
   wrapperCard_topContainer: {
-    backgroundColor: '#000',
+    backgroundColor: Colors.PrimaryBG,
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0,
     borderTopEndRadius: 2,
@@ -121,11 +136,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderTopEndRadius: 5,
     borderTopStartRadius: 5,
-    backgroundColor: '#000',
+    backgroundColor: Colors.PrimaryBG,
   },
   //
   cardContent_videoStatSection: {
-    backgroundColor: '#262323',
+    backgroundColor: Colors.SecondaryBG,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -142,14 +157,14 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   cardContent_subSection_text: {
-    color: '#fafafa',
+    color: Colors.PrimaryTextColor,
   },
   cardContent_subSection_textGray: {
-    color: '#ada0a0',
+    color: Colors.SecondaryTextColor,
   },
   //
   cardContent_commentSection: {
-    backgroundColor: '#262323',
+    backgroundColor: Colors.SecondaryBG,
     flexDirection: 'row',
     gap: 10,
     paddingVertical: 5,

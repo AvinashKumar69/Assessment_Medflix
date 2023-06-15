@@ -2,6 +2,8 @@ import Slider from '@react-native-community/slider';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
+import {Colors} from '../assets/colors/Colors';
+
 const ProgressBar = props => {
   const {currentTime, duration, onSlideCapture, onSlideStart, onSlideComplete} =
     props;
@@ -32,9 +34,9 @@ const ProgressBar = props => {
         onValueChange={handleOnSlide}
         onSlidingStart={onSlideStart}
         onSlidingComplete={onSlideComplete}
-        minimumTrackTintColor="#bd970d"
-        maximumTrackTintColor="#fafafa"
-        thumbTintColor="#fafafa"
+        minimumTrackTintColor={Colors.SecondaryAppColor}
+        maximumTrackTintColor={Colors.PrimaryAppColor}
+        thumbTintColor={Colors.PrimaryAppColor}
       />
       <View style={styles.timeWrapper}>
         <Text style={styles.timeLeft}>{position}</Text>
@@ -57,13 +59,13 @@ const styles = StyleSheet.create({
   timeLeft: {
     flex: 1,
     fontSize: 16,
-    color: '#FFFFFF',
+    color: Colors.PrimaryTextColor,
     paddingLeft: 10,
   },
   timeRight: {
     flex: 1,
     fontSize: 16,
-    color: '#FFFFFF',
+    color: Colors.PrimaryTextColor,
     textAlign: 'right',
     paddingRight: 10,
   },
