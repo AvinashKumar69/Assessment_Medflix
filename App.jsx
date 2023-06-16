@@ -12,16 +12,19 @@ import {StyleSheet} from 'react-native';
 import {PaperProvider} from 'react-native-paper';
 
 import RootNavigation from './src/navigation/RootNavigation';
+import {ReplayContextProvider} from './src/services/ReplayContext';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <PaperProvider>
-        <RootNavigation />
-      </PaperProvider>
-    </NavigationContainer>
+    <ReplayContextProvider>
+      <NavigationContainer>
+        <PaperProvider>
+          <RootNavigation />
+        </PaperProvider>
+      </NavigationContainer>
+    </ReplayContextProvider>
   );
 }
 

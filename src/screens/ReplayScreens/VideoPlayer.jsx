@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Dimensions,
   StatusBar,
@@ -9,10 +9,11 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Video from 'react-native-video';
 
+import {useFocusEffect} from '@react-navigation/native';
 import {Colors} from '../../assets/colors/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import VideoPlayerControls from '../../components/VideoPlayerControls';
-import {useOrientation} from '../../customHooks/useOrientation';
+import {ReplayContext} from '../../services/ReplayContext';
 
 const videoURL =
   'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
@@ -26,7 +27,9 @@ const width = Dimensions.get('window').height;
 const VideoPlayer = ({route}) => {
   const {videoData} = route.params;
   const videoRef = React.createRef();
-  const orientation = useOrientation();
+  // const orientation = useOrientation();
+  const {orientation, hideBottomBar, setHideBottomBar} =
+    useContext(ReplayContext);
   // const orientation = 'PORTRAIT';
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -35,15 +38,39 @@ const VideoPlayer = ({route}) => {
   const [fullscreen, setFullscreen] = useState(false);
   const [showControl, setShowControl] = useState(true);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something that should run on focus
+      setHideBottomBar(true);
+
+      return () => {
+        // Do something that should run on blur
+        setHideBottomBar(false);
+      };
+    }, []),
+  );
+
   useEffect(() => {
     if (orientation === 'PORTRAIT') {
       console.log('portrait');
+      setFullscreen(false);
       StatusBar?.setHidden(false);
     } else {
       console.log('landscape');
+      setFullscreen(true);
       StatusBar?.setHidden(true);
     }
   }, [orientation]);
+
+  const handleFullscreen = () => {
+    if (fullscreen) {
+      setFullscreen(true);
+      // Orientation.unlockAllOrientations();
+    } else {
+      setFullscreen(false);
+      // Orientation.lockToLandscapeLeft();
+    }
+  };
 
   const handleOrientation = orientation => {
     if (orientation === 'LANDSCAPE') {
@@ -88,13 +115,13 @@ const VideoPlayer = ({route}) => {
     }
   };
 
-  const handleFullscreen = () => {
-    if (fullscreen) {
-      // Orientation.unlockAllOrientations();
-    } else {
-      // Orientation.lockToLandscapeLeft();
-    }
-  };
+  // const handleFullscreen = () => {
+  //   if (fullscreen) {
+  //     // Orientation.unlockAllOrientations();
+  //   } else {
+  //     // Orientation.lockToLandscapeLeft();
+  //   }
+  // };
 
   const onLoadEnd = data => {
     setDuration(data.duration);
@@ -131,6 +158,12 @@ const VideoPlayer = ({route}) => {
           onEnd={onEnd}
           paused={!play}
           muted={true}
+          bufferConfig={{
+            minBufferMs: 15000,
+            maxBufferMs: 50000,
+            bufferForPlaybackMs: 2500,
+            bufferForPlaybackAfterRebufferMs: 5000,
+          }}
         />
 
         {showControl && (
@@ -179,15 +212,6 @@ const VideoPlayer = ({route}) => {
 export default VideoPlayer;
 
 const styles = StyleSheet.create({
-  backgroundVideo: {
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // bottom: 0,
-    // right: 0,
-    height: 300,
-    width: '100%',
-  },
   container: {
     backgroundColor: Colors.PrimaryBG,
   },

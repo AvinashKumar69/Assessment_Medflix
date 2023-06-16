@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {useContext} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {Colors} from '../assets/colors/Colors';
@@ -8,9 +8,13 @@ import HomeStack from './HomeStack';
 import MyActivityStack from './MyActivityStack';
 import ReplayStack from './ReplayStack';
 import UpcomingStack from './UpcomingStack';
+import {ReplayContext} from '../services/ReplayContext';
 
 const MainStack = () => {
   const Tab = createBottomTabNavigator();
+  const {orientation, hideBottomBar, setHideBottomBar} =
+    useContext(ReplayContext);
+  console.log('orientation-->', orientation);
 
   return (
     <Tab.Navigator
@@ -52,7 +56,18 @@ const MainStack = () => {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Feed" component={FeedStack} />
       <Tab.Screen name="Upcoming" component={UpcomingStack} />
-      <Tab.Screen name="Replay" component={ReplayStack} />
+      <Tab.Screen
+        name="Replay"
+        component={ReplayStack}
+        options={{
+          tabBarStyle: {
+            display: hideBottomBar ? 'none' : 'flex', // TODO: use onBlur callback function to detect the detached screen via androind physical back button
+            backgroundColor: Colors.PrimaryBG,
+            height: 60,
+            paddingBottom: 5,
+          },
+        }}
+      />
       <Tab.Screen name="My activity" component={MyActivityStack} />
     </Tab.Navigator>
   );

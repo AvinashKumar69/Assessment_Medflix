@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,9 +8,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Colors} from '../assets/colors/Colors';
 import Replay from '../screens/ReplayScreens/Replay';
 import VideoPlayer from '../screens/ReplayScreens/VideoPlayer';
+import {ReplayContext} from '../services/ReplayContext';
 
 export default ReplayStack = () => {
   const ReplayStack = createNativeStackNavigator();
+  const {hideHeader, setHideHeader} = useContext(ReplayContext);
 
   const headerLeft = props => (
     <Image
@@ -61,7 +63,10 @@ export default ReplayStack = () => {
       <ReplayStack.Screen
         name="VideoPlayer"
         component={VideoPlayer}
-        options={({route}) => ({title: route.params.name})}
+        options={({route}) => ({
+          title: route.params.name,
+          headerShown: hideHeader ? false : true,
+        })}
       />
     </ReplayStack.Navigator>
   );

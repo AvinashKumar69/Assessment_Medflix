@@ -1,11 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {Colors} from '../assets/colors/Colors';
+import {ReplayContext} from '../services/ReplayContext';
 
 const VideoCard = ({data}) => {
   const navigation = useNavigation();
