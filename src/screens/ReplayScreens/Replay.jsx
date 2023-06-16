@@ -6,7 +6,6 @@ import {mediaJSON} from '../../assets/data/VideoData';
 import VideoCard from '../../components/VideoCard';
 
 const Replay = () => {
-  // console.log('mediaJSON-->', mediaJSON.categories[0].videos[0]);
   const VIDEO_DATA = mediaJSON?.categories[0]?.videos;
 
   return (

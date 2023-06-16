@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   Dimensions,
@@ -6,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Video from 'react-native-video';
 
-import {useFocusEffect} from '@react-navigation/native';
 import {Colors} from '../../assets/colors/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import VideoPlayerControls from '../../components/VideoPlayerControls';
@@ -27,10 +28,7 @@ const width = Dimensions.get('window').height;
 const VideoPlayer = ({route}) => {
   const {videoData} = route.params;
   const videoRef = React.createRef();
-  // const orientation = useOrientation();
-  const {orientation, hideBottomBar, setHideBottomBar} =
-    useContext(ReplayContext);
-  // const orientation = 'PORTRAIT';
+  const {setHideBottomBar} = useContext(ReplayContext);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -40,40 +38,16 @@ const VideoPlayer = ({route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Do something that should run on focus
       setHideBottomBar(true);
 
       return () => {
-        // Do something that should run on blur
         setHideBottomBar(false);
       };
     }, []),
   );
 
-  useEffect(() => {
-    if (orientation === 'PORTRAIT') {
-      console.log('portrait');
-      setFullscreen(false);
-      StatusBar?.setHidden(false);
-    } else {
-      console.log('landscape');
-      setFullscreen(true);
-      StatusBar?.setHidden(true);
-    }
-  }, [orientation]);
-
-  const handleFullscreen = () => {
-    if (fullscreen) {
-      setFullscreen(true);
-      // Orientation.unlockAllOrientations();
-    } else {
-      setFullscreen(false);
-      // Orientation.lockToLandscapeLeft();
-    }
-  };
-
   const handleOrientation = orientation => {
-    if (orientation === 'LANDSCAPE') {
+    if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       setFullscreen(true);
       StatusBar.setHidden(true);
     } else {
@@ -81,6 +55,13 @@ const VideoPlayer = ({route}) => {
       StatusBar.setHidden(false);
     }
   };
+
+  useEffect(() => {
+    Orientation.addOrientationListener(handleOrientation);
+    return () => {
+      Orientation.removeOrientationListener(handleOrientation);
+    };
+  }, []);
 
   const handlePlayPause = () => {
     if (play) {
@@ -115,13 +96,15 @@ const VideoPlayer = ({route}) => {
     }
   };
 
-  // const handleFullscreen = () => {
-  //   if (fullscreen) {
-  //     // Orientation.unlockAllOrientations();
-  //   } else {
-  //     // Orientation.lockToLandscapeLeft();
-  //   }
-  // };
+  const handleFullscreen = () => {
+    if (fullscreen) {
+      setFullscreen(true);
+      Orientation.unlockAllOrientations();
+    } else {
+      setFullscreen(false);
+      Orientation.lockToLandscapeLeft();
+    }
+  };
 
   const onLoadEnd = data => {
     setDuration(data.duration);
