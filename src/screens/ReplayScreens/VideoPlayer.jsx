@@ -140,7 +140,6 @@ const VideoPlayer = ({route}) => {
           onProgress={onProgress}
           onEnd={onEnd}
           paused={!play}
-          muted={true}
           bufferConfig={{
             minBufferMs: 15000,
             maxBufferMs: 50000,

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,12 +19,14 @@ const VideoCard = ({data}) => {
   };
 
   return (
-    <Card style={styles.wrapperCard_topContainer} onPress={videoClickHandler}>
-      <Card.Cover
-        style={styles.cardCover_imageContainer}
-        resizeMethod="auto"
-        source={{uri: thumbnail}}
-      />
+    <Card style={styles.wrapperCard_topContainer}>
+      <TouchableOpacity onPress={videoClickHandler}>
+        <Card.Cover
+          style={styles.cardCover_imageContainer}
+          resizeMethod="auto"
+          source={{uri: thumbnail}}
+        />
+      </TouchableOpacity>
 
       <Card.Content style={styles.cardContent_videoStatSection}>
         <View style={styles.cardContent_section}>
